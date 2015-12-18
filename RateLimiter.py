@@ -3,31 +3,38 @@ Created on Dec 17, 2015
 
 @author: Philip Wardlaw
 '''
+import time, logging
 
 class RateLimiter(object):
     '''
     classdocs
     '''
+    FourSpaceLimit = 5000
+    HOUR = 3600
+    log = logging.getLogger('RateLimiter')
 
-
-    def __init__(self, params):
+    def __init__(self):
         '''
         Constructor
         '''
-        """rate = 5.0; // unit: messages
-        per  = 8.0; // unit: seconds
-        allowance = rate; // unit: messages
-        last_check = now(); // floating-point, e.g. usec accuracy. Unit: seconds
+        self.log.debug('Instantiating RateLimiter')
+        self.times = []
+       
+    def check(self):
+        self.times.append(time.time())
+        self.__filterTimes()
         
-        when (message_received):
-          current = now();
-          time_passed = current - last_check;
-          last_check = current;
-          allowance += time_passed * (rate / per);
-          if (allowance > rate):
-            allowance = rate; // throttle
-          if (allowance < 1.0):
-            discard_message();
-          else:
-            forward_message();
-            allowance -= 1.0;"""
+        eventsInLastHour = len(self.times)
+        
+        if eventsInLastHour > RateLimiter.FourSpaceLimit:
+            self.log.info('Sleeping to avoid exceeding rate')
+            time.sleep(60)
+
+    def __filterTimes(self):
+        timeNow = time.time()       
+        for t in self.times:
+            if timeNow - t > RateLimiter.HOUR:
+                self.times.remove(t)
+
+        
+        

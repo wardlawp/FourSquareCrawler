@@ -5,8 +5,7 @@ Created on Dec 17, 2015
 '''
 import logging
 import math
-from Venue import Venue
-from Results import Results
+import VenueRequest
 
 def isSquare(x):
     root = math.sqrt(x)
@@ -35,6 +34,8 @@ class SearchRectangle(object):
         self.recSubdivisions = recSubdivisions
         self.__subDivisions = [] 
         self.__subDivide(initialDivisions) 
+        
+
     
     def subdivisions(self):
         return self.__subDivisions
@@ -59,20 +60,21 @@ class SearchRectangle(object):
                 newSearchRect = SearchRectangle(NW, SW, recSubdivisions = self.recSubdivisions)
                 self.__subDivisions.append(newSearchRect)
                 
-    def search(self):
+    def search(self, rateLimiter, venueRequest):
         if len(self.__subDivisions) == 0:
             for s in self.__subDivisions:
-                s.solve()
+                s.search(rateLimiter, venueRequest)
         else:
-            status, results = Venue.getVenuesFromFourSquare(self.NW, self.SE)
+            rateLimiter.check()
+            status, results = venueRequest.getVenuesInRegion(self.NW, self.SE)
             if status:
-                Results.store(results)
+                self.__store(results) #TODO
             else:
                 self.log.info("Search failed, creating sub divisions and searching again")
                 self.__subDivide(self.recSubdivisions)
-                self.search()
+                self.search(rateLimiter, venueRequest)
             
-             
+        return 'TODO'
         
         
         
