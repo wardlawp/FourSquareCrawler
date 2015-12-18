@@ -3,12 +3,10 @@ Created on Dec 17, 2015
 
 @author: Philip Wardlaw
 '''
-import requests
 import logging
 from SearchRectangle import SearchRectangle
-from Venue import Venue
 from datetime import datetime
-from datetime import time
+from Results import Results
 
 def configureLogging():
     # set up logging to file - see previous section for more details
@@ -31,8 +29,11 @@ if __name__ == '__main__':
     configureLogging()
     
     log = logging.getLogger('AppRoot')
-    log.info('Starting app')
+    log.info('Starting Crawler')
     
-    searchRect = SearchRectangle()
-    Venue.getVenuesFromFourSquare(searchRect)
+    searchRect = SearchRectangle([1.459812, 103.575513], [1.187969, 104.127510], 100, 16)
+    searchRect.search()
+    Results.writeToFile("output.json")
+        
+
     
