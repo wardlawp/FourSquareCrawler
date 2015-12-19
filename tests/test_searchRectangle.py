@@ -3,7 +3,6 @@ from SearchRectangle import SearchRectangle
 
 class TestSearchRectangle(unittest.TestCase):
 
-
     def test_subdivision(self):
         searchRect = SearchRectangle([0,0], [2,2], 4)
         subRects = searchRect.subdivisions()

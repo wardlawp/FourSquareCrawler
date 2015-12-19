@@ -1,14 +1,29 @@
 # FourSquareCrawler
+Get all venues in singapore from FourSquare
 
 ## Installation
-- Install python 2.7.9
-- Get pip (only necessary on linux): sudo apt-get install python-pip python-dev build-essential 
-- Install project pre requests: python -m pip install -r requirements.txt
-- Create yourself a foursquare developer profile (https://foursquare.com/login?continue=%2Fdevelopers%2Fapps), add an app (you can make up the details) and copy the key and secret into [TBD]
+-  Install python 2.7.X (X = 9 or higher)
+-  Install project prerequisites: python -m pip install -r requirements.txt
+-  Edit settings.py
+
+## Usage
+- Using CMD goto folder
+- Type 'python main.py'
+- Crawling may take several hours
+
+## Output
+-  A log file named 'runtimeHourMinuteSecond.log' in the logs folder. Time corresponds to start time
+-  A json file named 'resultsHourMinuteSecond.log' in format { venue_id : venue, venue_id : venue...}
+-  See Venue JSON format https://developer.foursquare.com/docs/responses/venue
 
 ## Other
-- run unit tests: python -m unittest discover tests/
+-  To run unit tests: python -m unittest discover tests/
+
+## Ubuntu
+The following commands may be necessary on Ubuntu/Linux to install addtional prerequisite
+
+-  sudo apt-get install python-pip python-dev build-essential
 -  python -m pip install requests[security]
-- sudo python -m  pip install pyopenssl ndg-httpsclient pyasn1
-- sudo apt-get install libffi-dev libssl-dev
+-  sudo python -m  pip install pyopenssl ndg-httpsclient pyasn1
+-  sudo apt-get install libffi-dev libssl-dev
 

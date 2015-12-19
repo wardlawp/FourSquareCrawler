@@ -1,7 +1,7 @@
 '''
-Created on Dec 17, 2015
-
+@summary: Rectangular recursive search for venues
 @author: Philip Wardlaw
+Created on Dec 17, 2015
 '''
 import logging
 import math
@@ -12,16 +12,22 @@ def isSquare(x):
     return (root%1.0) == 0
 
 class SearchRectangle(object):
-    '''
-    classdocs
-    '''
+    """ A Rectangular area denoted by GPS coordinates which 
+    supports recursive searches. Search recurses into more granular
+    rectangles should the search request fail.
+    """
     log = logging.getLogger('SearchRectangle')
 
 
     def __init__(self, NE, SW, initialDivisions=1, recSubdivisions = 9):
         """
-        NE - GPS coordinate, the north west corner of the search rectangle
-        SW - GPS coordinate, the south east corner of the search rectangle
+        Constructor
+        
+        Keyword arguments:
+        NE -- list of two floats, GPS coordinate,s the north east corner of the search rectangle
+        SW -- list of two floats, GPS coordinates, the south west corner of the search rectangle
+        initialDivisions -- integer, the number of divisions the rectangle is initial divided into, must be square number
+        recSubdivisions -- integer, the number of divisions the rectangle is recursively subdivided into should the searchRequest fail, must be square number
         """
         constrMessage ="Instantiating SearchRectangle NE [{0},{1}] SW [{2},{3}]".format(NE[0], NE[1], SW[0], SW[1])
         self.log.debug( constrMessage)
@@ -37,11 +43,32 @@ class SearchRectangle(object):
         
         self.__results = {}
         
-
+    def search(self, rateLimiter, venueRequest):
+        """ Search for venues, returns a dictionary of venues
+        Keyword arguments:
+        rateLimiter -- object type RateLimiter
+        venueRequest -- object type VenueRequest
+        """
+        if len(self.__subDivisions) != 0:
+            for s in self.__subDivisions:
+                self.__addResults(s.search(rateLimiter, venueRequest))
+        else:
+            rateLimiter.check()
+            results = venueRequest.getVenuesInRegion(self.NE, self.SW)
+            
+            if len(results) < VenueRequest.MAX_VENUES_PER_REQUEST: 
+                self.__store(results) 
+            else:
+                self.log.warn("MAX_VENUES_PER_REQUEST exceeded. Sub dividing region to find additional venues")
+                self.__subDivide(self.recSubdivisions)
+                self.__addResults(self.search(rateLimiter, venueRequest))
+            
+        return self.__results
     
     def subdivisions(self):
+        """For testing purposes
+        """
         return self.__subDivisions
-    
    
     
     def __subDivide(self, numSubdivisions):
@@ -60,23 +87,6 @@ class SearchRectangle(object):
                 newSearchRect = SearchRectangle(NW, SW, recSubdivisions = self.recSubdivisions)
                 self.__subDivisions.append(newSearchRect)
                 
-                
-    def search(self, rateLimiter, venueRequest):
-        if len(self.__subDivisions) != 0:
-            for s in self.__subDivisions:
-                self.__addResults(s.search(rateLimiter, venueRequest))
-        else:
-            rateLimiter.check()
-            results = venueRequest.getVenuesInRegion(self.NE, self.SW)
-            
-            if len(results) < VenueRequest.MAX_VENUES_PER_REQUEST: 
-                self.__store(results) #TODO
-            else:
-                self.log.warn("MAX_VENUES_PER_REQUEST exceeded. Sub dividing region to find additional venues")
-                self.__subDivide(self.recSubdivisions)
-                self.__addResults(self.search(rateLimiter, venueRequest))
-            
-        return self.__results
     
     def __store(self, newResults):
         
