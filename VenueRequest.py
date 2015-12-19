@@ -35,7 +35,6 @@ class VenueRequest(object):
         # TODO change
         payload['ne'] = "{0},{1}".format(NE[0],NE[1])
         payload['sw'] = "{0},{1}".format(SW[0],SW[1])
-        payload['country'] = self.country
         payload['v'] = self.apiVersion
         payload['intent'] = 'browse'
         payload['limit'] = 50
@@ -57,9 +56,16 @@ class VenueRequest(object):
         if response.status_code == 200:
             json = response.json()
             
+            
             venues = json['response']['venues']
-            self.log.debug('Retreived {0} venues'.format(len(venues)))
-            return venues
+            countryVenues = []
+
+            for v in venues:
+                if v['location']['country'] == self.country:
+                    countryVenues.append(v)
+                    
+            self.log.debug('Retreived {0} venues'.format(len(countryVenues)))
+            return countryVenues
                         
         elif response.status_code == 403:
             self.log.warning('Rate limit Exceeded')
