@@ -1,0 +1,59 @@
+12-19 09:46 AppRoot      INFO     Starting Crawler
+12-19 09:46 AppRoot      DEBUG    Initializing Assets
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36284,103.9729083] SW [1.36099545,103.96984945]
+12-19 09:46 VenueRequest DEBUG    Instantiating VenueRequest
+12-19 09:46 RateLimiter  DEBUG    Instantiating RateLimiter
+12-19 09:46 AppRoot      INFO     Beginning Search on NE [1.36284, 103.9729083] SW [1.36099545, 103.96984945]
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36284,103.9729083] SW [1.36099545,103.96984945]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36099545%2C103.96984945&ne=1.36284%2C103.9729083&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 50 venues
+12-19 09:46 SearchRectangle WARNING  MAX_VENUES_PER_REQUEST exceeded. Sub dividing region to find additional venues
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36284,103.9729083] SW [1.36222515,103.971888683]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36284,103.971888683] SW [1.36222515,103.970869067]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36284,103.970869067] SW [1.36222515,103.96984945]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36222515,103.9729083] SW [1.3616103,103.971888683]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36222515,103.971888683] SW [1.3616103,103.970869067]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.36222515,103.970869067] SW [1.3616103,103.96984945]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.3616103,103.9729083] SW [1.36099545,103.971888683]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.3616103,103.971888683] SW [1.36099545,103.970869067]
+12-19 09:46 SearchRectangle DEBUG    Instantiating SearchRectangle NE [1.3616103,103.970869067] SW [1.36099545,103.96984945]
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36284,103.9729083] SW [1.36222515,103.971888683]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36222515%2C103.971888683&ne=1.36284%2C103.9729083&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 32 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36284,103.971888683] SW [1.36222515,103.970869067]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36222515%2C103.970869067&ne=1.36284%2C103.971888683&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 2 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36284,103.970869067] SW [1.36222515,103.96984945]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36222515%2C103.96984945&ne=1.36284%2C103.970869067&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 85
+12-19 09:46 VenueRequest DEBUG    Retreived 0 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36222515,103.9729083] SW [1.3616103,103.971888683]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.3616103%2C103.971888683&ne=1.36222515%2C103.9729083&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 14 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36222515,103.971888683] SW [1.3616103,103.970869067]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.3616103%2C103.970869067&ne=1.36222515%2C103.971888683&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 3 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.36222515,103.970869067] SW [1.3616103,103.96984945]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.3616103%2C103.96984945&ne=1.36222515%2C103.970869067&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 2 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.3616103,103.9729083] SW [1.36099545,103.971888683]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36099545%2C103.971888683&ne=1.3616103%2C103.9729083&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 3 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.3616103,103.971888683] SW [1.36099545,103.970869067]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36099545%2C103.970869067&ne=1.3616103%2C103.971888683&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 85
+12-19 09:46 VenueRequest DEBUG    Retreived 0 venues
+12-19 09:46 VenueRequest INFO     Searching for Venues in NE [1.3616103,103.970869067] SW [1.36099545,103.96984945]
+12-19 09:46 requests.packages.urllib3.connectionpool INFO     Starting new HTTPS connection (1): api.foursquare.com
+12-19 09:46 requests.packages.urllib3.connectionpool DEBUG    "GET /v2/venues/search?country=Singapore&sw=1.36099545%2C103.96984945&ne=1.3616103%2C103.970869067&intent=browse&client_id=0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR&v=20140806&client_secret=T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT&limit=50 HTTP/1.1" 200 None
+12-19 09:46 VenueRequest DEBUG    Retreived 12 venues
+12-19 09:46 AppRoot      INFO     Crawl Complete
+12-19 09:46 AppRoot      INFO     68 venues captured.
+12-19 09:46 AppRoot      INFO     Writing file to output/results094645.json.

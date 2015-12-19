@@ -21,7 +21,6 @@ class VenueRequest(object):
     
     def __init__(self, clientId, clientSecret):
         self.log.debug('Instantiating VenueRequest')
-        
         self.clientId = clientId
         self.clientSecret = clientSecret
         self.url = self.FOURSQUARE_SEARCH_URL
@@ -29,51 +28,57 @@ class VenueRequest(object):
         self.country = self.COUNTRY
         self.timeout= self.TIMEOUT
     
+    def __prepareParams(self, NE, SW):
+        payload = {}
+        payload['client_id'] = self.clientId
+        payload['client_secret'] = self.clientSecret
+        # TODO change
+        payload['ne'] = "{0},{1}".format(NE[0],NE[1])
+        payload['sw'] = "{0},{1}".format(SW[0],SW[1])
+        payload['country'] = self.country
+        payload['v'] = self.apiVersion
+        payload['intent'] = 'browse'
+        payload['limit'] = 50
+        return payload
     
-    
-    def getVenuesInRegion(self,NW, SE):
+    def getVenuesInRegion(self, NE, SW):
         """
         
         """
-        msg ="Searching for Venues in NW [{0},{1}] SE [{2},{3}]"
-        msg =  msg.format(NW[0], NW[1], SE[0], SE[1])
+        msg ="Searching for Venues in NE [{0},{1}] SW [{2},{3}]"
+        msg =  msg.format(NE[0], NE[1], SW[0], SW[1])
         self.log.info(msg)
 
-        payload = {'NW': NW, 'SE': SE, 'country': self.country, 'v' : self.apiVersion }
-        # TODO
-        # limit :50
-        # ll : 32.4,-56.5 //dont think this is needed
-        # intent: browse
-        # ne sw! TODO
-        # client_id
-        # client_secret
-        
+        payload = self.__prepareParams(NE, SW)
         response = requests.get(self.url, payload, timeout = self.timeout)
         
         if response.status_code == 200:
             json = response.json()
             
-            #TODO determine json length
-            if json.length >= self.MAX_VENUES_PER_REQUEST:
-                return False, []
-            else:
-                return True, json
+            venues = json['response']['venues']
+            self.log.debug('Retreived {0} venues'.format(len(venues)))
+            return venues
+            #dict: {u'meta': {u'code': 200, u'requestId': u'567549bf498eb63877a59d22'}, u'response': {u'venues': []}}
             
+            
+                        
         elif response.status_code == 403:
             self.log.warning('Rate limit Exceeded')
             sleepUntil = response.headers.get('X-RateLimit-Reset')
-            #TODO actually work out deltaTime
             deltaTime = sleepUntil - time.time()
             self.log.info('Waiting {0} seconds and resuming...'.format(deltaTime))
             time.sleep(deltaTime)
-            self.getVenuesInRegion(NW, SE)
-        
+            self.getVenuesInRegion(NE, SW)
+            
+            
         else:
-            self.log.warning('Unhandled http error occured')
+            self.log.warning('Unhandled http error occurred')
+            self.log.warning(response.text)
+            self.log.warning(response.url)
             response.raise_for_status()
             
         
-        return False, []
+        return {}
         #api.foursquare.com/v2/venues/search?ll=40.7,-74&client_id=&client_secret=&v=
         
 

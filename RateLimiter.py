@@ -27,7 +27,7 @@ class RateLimiter(object):
         eventsInLastHour = len(self.times)
         
         if eventsInLastHour > RateLimiter.FourSpaceLimit:
-            self.log.info('Sleeping to avoid exceeding rate')
+            self.log.warn('ABOUT TO EXCEED RATE LIMIT! Sleeping 1 minute to avoid exceeding rate')
             time.sleep(60)
 
     def __filterTimes(self):

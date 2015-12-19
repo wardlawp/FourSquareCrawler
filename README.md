@@ -8,3 +8,7 @@
 
 ## Other
 - run unit tests: python -m unittest discover tests/
+-  python -m pip install requests[security]
+- sudo python -m  pip install pyopenssl ndg-httpsclient pyasn1
+- sudo apt-get install libffi-dev libssl-dev
+
