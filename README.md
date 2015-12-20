@@ -7,14 +7,16 @@ Get all venues in singapore from FourSquare
 -  Edit settings.py
 
 ## Usage
-- Using CMD goto folder
-- Type 'python main.py'
-- Crawling may take several hours
+-  Using CMD goto folder
+-  Type 'python main.py'
+-  Crawling may take several hours
+-  Ensure you are on a stable internet connection, preferabbly ethernet over wifi
 
 ## Output
 -  A log file named 'runtimeHourMinuteSecond.log' in the logs folder. Time corresponds to start time
 -  A json file named 'resultsHourMinuteSecond.log' in format { venue_id : venue, venue_id : venue...}
 -  See Venue JSON format https://developer.foursquare.com/docs/responses/venue
+-  JSON Viewing tool: http://jsonviewer.stack.hu/
 
 ## Other
 -  To run unit tests: python -m unittest discover tests/

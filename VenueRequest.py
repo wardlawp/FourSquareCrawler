@@ -15,7 +15,6 @@ class VenueRequest(object):
     FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search'
     API_VERSION = '20140806'
     COUNTRY = 'Singapore'
-    TIMEOUT = 30
     INTERNAL_ERROR_RETRY_LIMIT = 5
     
     def __init__(self, clientId, clientSecret):
@@ -25,7 +24,6 @@ class VenueRequest(object):
         self.url = self.FOURSQUARE_SEARCH_URL
         self.apiVersion = self.API_VERSION
         self.country = self.COUNTRY
-        self.timeout= self.TIMEOUT
         self.__internalErrorRetrys = 0
     
     def __prepareParams(self, NE, SW):
@@ -51,40 +49,55 @@ class VenueRequest(object):
         self.log.info(msg)
 
         payload = self.__prepareParams(NE, SW)
-        response = requests.get(self.url, payload, timeout = self.timeout)
         
-        if response.status_code == 200:
-            json = response.json()
-            
-            
-            venues = json['response']['venues']
-            countryVenues = []
-
-            for v in venues:
-                if v['location']['country'] == self.country:
-                    countryVenues.append(v)
-                    
-            self.log.debug('Retreived {0} venues'.format(len(countryVenues)))
-            return countryVenues
+        try:
+            response = requests.get(self.url, payload)
+        
+            if response.status_code == 200:
+                json = response.json()
+                
+                venues = json['response']['venues']
+                countryVenues = []
+    
+                for v in venues:
+                    if v['location'].has_key('country') and \
+                       v['location']['country'] == self.country:
+                        countryVenues.append(v)
                         
-        elif response.status_code == 403:
-            self.log.warning('Rate limit Exceeded')
-            sleepUntil = response.headers.get('X-RateLimit-Reset')
-            deltaTime = sleepUntil - time.time()
-            self.log.info('Waiting {0} seconds and resuming...'.format(deltaTime))
-            time.sleep(deltaTime)
-            return self.getVenuesInRegion(NE, SW)
+                self.log.debug('Retreived {0} venues'.format(len(countryVenues)))
+                self.__internalErrorRetrys = 0
+                return countryVenues
+                        
+            elif response.status_code == 403:
+                self.log.warning('Rate limit Exceeded')
+                sleepUntil = response.headers.get('X-RateLimit-Reset')
+                deltaTime = sleepUntil - time.time()
+                self.log.warning('Waiting {0} seconds and resuming...'.format(deltaTime))
+                time.sleep(deltaTime)
+                return self.getVenuesInRegion(NE, SW)
+                
+            elif (response.status_code == 500) and (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
+                self.log.warning('API Server returns 500, waiting one minute and trying again')
+                time.sleep(60)
+                self.__internalErrorRetrys += 1
+                return self.getVenuesInRegion(NE, SW)
             
-        elif (response.status_code == 500) and (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
-            self.log.warning('API Server returns 500, waiting one minute and trying again')
-            time.sleep(60)
-            self.__internalErrorRetrys += 1
-            self.getVenuesInRegion(NE, SW)
+            else:
+                self.log.warning('Unhandled HTTP error occurred')
+                self.log.warning(response.text)
+                response.raise_for_status()
+                
+        except Exception as e:
+            self.log.warning('Unhandled Exception error occurred')
             
+            if (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
+                self.log.warning('Waiting one minute and trying again')
+                time.sleep(60)
+                self.__internalErrorRetrys += 1
+                return self.getVenuesInRegion(NE, SW)
+            else:
+                self.log.warning('Maximum retries performed, throwing exception...')
+                raise e
             
-        else:
-            self.log.warning('Unhandled HTTP error occurred')
-            self.log.warning(response.text)
-            self.log.warning(response.url)
-            response.raise_for_status()
+
             

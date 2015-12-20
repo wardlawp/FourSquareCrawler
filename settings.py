@@ -13,5 +13,7 @@ CLIENT_SECRET = 'T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT'
 
 #GPS Coordinates bounding Singapore 
 #Obtained from Google Maps
+#See http://www.darrinward.com/lat-long/?id=1671068
+#Note only Singapore venues will be stored (Malaysia will be ignored)
 SEARCH_NE = [1.471,104.086133]
 SEARCH_SW = [1.136524,103.606576]
