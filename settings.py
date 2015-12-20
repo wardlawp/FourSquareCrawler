@@ -8,8 +8,8 @@ Created on Dec 17, 2015
 #    Create yourself a FourSquare developer profile
 #    https://foursquare.com/login?continue=%2Fdevelopers%2Fapps
 #    add an app (you can make up the details) and copy the key and secret here
-CLIENT_ID = '0NMBABZPYKO31STLF5PE3GWRL32DNMKZUIKHHVOF5FE4FDHR'
-CLIENT_SECRET = 'T2QYMUAVN1HJQXCQVRHQTFUFPONSPZBMWB3JJ2JFV5TR3OGT'
+CLIENT_ID = ''
+CLIENT_SECRET = ''
 
 # GPS Coordinates bounding Singapore
 # Obtained from Google Maps

@@ -16,7 +16,8 @@ Get all venues in singapore from FourSquare
 -  A log file named 'runtimeHourMinuteSecond.log' in the logs folder. Time corresponds to start time
 -  A json file named 'resultsHourMinuteSecond.log' in format { venue_id : venue, venue_id : venue...}
 -  See Venue JSON format https://developer.foursquare.com/docs/responses/venue
--  JSON Viewing tool: http://jsonviewer.stack.hu/
+-  The JSON file will be huge, you can try opening it using chrome
+-  JSON Viewing tool: http://jsonviewer.stack.hu/ (may not work for huge files)
 
 ## Other
 -  To run unit tests: python -m unittest discover tests/
