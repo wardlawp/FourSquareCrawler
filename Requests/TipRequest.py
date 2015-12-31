@@ -73,7 +73,7 @@ class TipRequest(object):
                                  ' resuming...'.format(deltaTime))
 
                 time.sleep(deltaTime)
-                return self.getTipsForVenue(venueId, count)
+                return self.getTipsForVenue(venueId, offset)
 
             elif (response.status_code == 500) and (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
 
@@ -81,7 +81,7 @@ class TipRequest(object):
                                  ' minute and trying again')
                 time.sleep(60)
                 self.__internalErrorRetrys += 1
-                return self.getTipsForVenue(venueId, count)
+                return self.getTipsForVenue(venueId, offset)
 
             else:
                 self.log.warning('Unhandled HTTP error occurred')
@@ -95,7 +95,7 @@ class TipRequest(object):
                 self.log.warning('Waiting one minute and trying again')
                 time.sleep(60)
                 self.__internalErrorRetrys += 1
-                return self.getTipsForVenue(venueId, count)
+                return self.getTipsForVenue(venueId, offset)
             else:
                 self.log.warning('Maximum retries performed,' +
                                  ' throwing exception...')

@@ -1,5 +1,7 @@
-# FourSquareCrawler
-Get all venues in singapore from FourSquare
+# FourSquareCrawlers
+- Get all venues in singapore from FourSquare
+- Get all tips for a list of venues
+
 
 ## Installation
 -  Install python 2.7.X (X = 9 or higher)
@@ -7,10 +9,14 @@ Get all venues in singapore from FourSquare
 -  Edit settings.py
 
 ## Usage
--  Using CMD goto folder
--  Type 'python main.py'
 -  Crawling may take several hours
 -  Ensure you are on a stable internet connection, preferabbly ethernet over wifi
+
+### Venue Crawler
+-  Type 'python VenueCrawler.py' and hit enter to run
+
+### Tips Crawler
+- Type 'python TipsCrawler.py venueOutput.csv' where 'venueOutput.csv' is produced from the VenueCrawler output using the approprate converter
 
 ## Output
 -  A log file named 'runtimeHourMinuteSecond.log' in the logs folder. Time corresponds to start time

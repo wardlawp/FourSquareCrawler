@@ -45,10 +45,13 @@ if __name__ == '__main__':
     log.info('Beginning retrieval of tips for {0} venues'.format(len(venuesIds)))
 
     results = {}
+    totalLen = len(venuesIds)
+    curr = 0
     for vId in venuesIds:
         rate.check()
+        log.info('{0}/{1} Venues'.format(curr, totalLen))
         results[vId] = request.getTipsForVenue(vId)
-
+        curr += 1
     log.info('Crawl Complete')
     log.info('{0} tips retrieved.'.format(len(results)))
 
