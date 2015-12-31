@@ -10,13 +10,12 @@ import logging
 import json
 import csv
 import sys
+from datetime import datetime
 
 # Assets of this Project
 from settings import CLIENT_ID, CLIENT_SECRET
-from datetime import datetime
-from RateLimiter import RateLimiter
-from TipRequest import TipRequest
-from utils import configureLogging
+from Utils import RateLimiter, configureLogging
+from Requests import TipRequest
 
 
 if __name__ == '__main__':
@@ -37,7 +36,8 @@ if __name__ == '__main__':
     with open(sys.argv[1], 'r') as fp:
         reader = csv.reader(fp, delimiter='\t')
         for row in reader:
-            venuesIds.append(row[0])
+            if len(row) != 0:
+                venuesIds.append(row[0])
 
     request = TipRequest(CLIENT_ID, CLIENT_SECRET)
     rate = RateLimiter()

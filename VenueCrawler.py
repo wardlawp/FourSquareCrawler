@@ -8,15 +8,13 @@ Created on Dec 17, 2015
 # Python General
 import logging
 import json
-
+from datetime import datetime
 
 # Assets of this Project
 from settings import *
 from SearchRectangle import SearchRectangle
-from datetime import datetime
-from RateLimiter import RateLimiter
-from VenueRequest import VenueRequest
-from utils import configureLogging
+from Utils import RateLimiter, configureLogging
+from Requests import VenueRequest
 
 if __name__ == '__main__':
     startTimeStamp = datetime.now().strftime("%H%M%S")

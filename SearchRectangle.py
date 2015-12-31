@@ -5,7 +5,7 @@ Created on Dec 17, 2015
 '''
 import logging
 import math
-from VenueRequest import VenueRequest
+from Requests import VenueRequest
 
 
 def isSquare(x):
