@@ -12,7 +12,7 @@ import json
 class TipRequest(object):
     """Class for making requests to FourSquare Tip api
     """
-    log = logging.getLogger('VenueRequest')
+    log = logging.getLogger('TipRequest')
     MAX_TIPS_PER_REQUEST = 500
     FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/{0}/tips'
     API_VERSION = '20140806'
@@ -26,7 +26,7 @@ class TipRequest(object):
         self.apiVersion = self.API_VERSION
         self.__internalErrorRetrys = 0
 
-    def __prepareParams(self, venueId, offset):
+    def __prepareParams(self, offset):
         payload = {}
         payload['client_id'] = self.clientId
         payload['client_secret'] = self.clientSecret
@@ -42,17 +42,19 @@ class TipRequest(object):
         msg = "Requesting Tips for Venue {0}".format(venueId)
         self.log.info(msg)
 
-        payload = self.__prepareParams(venueId, offset)
+        payload = self.__prepareParams(offset)
         url = self.url.format(venueId)
 
         try:
             response = requests.get(url, payload)
 
             if response.status_code == 200:
-                count = json['response']['count']
-                items = json['response']['count']
+                json = response.json()
+                
+                items = json['response']['tips']['items']
+                count = len(items)
 
-                if count > self.MAX_TIPS_PER_REQUEST:
+                if count == self.MAX_TIPS_PER_REQUEST:
                     m = self.MAX_TIPS_PER_REQUEST
                     newOffset = offset + m
 
@@ -64,15 +66,19 @@ class TipRequest(object):
                     items += rItems
 
                 return count, items
+            
+            elif response.status_code == 404:
+                #Venue no loner exists
+                return 0, []
 
             elif response.status_code == 403:
                 self.log.warning('Rate limit Exceeded')
-                sleepUntil = response.headers.get('X-RateLimit-Reset')
+                sleepUntil = int(response.headers.get('x-rateLimit-reset'))
                 deltaTime = sleepUntil - time.time()
-                self.log.warning('Waiting {0} seconds and' +
-                                 ' resuming...'.format(deltaTime))
+                self.log.warning('Waiting {0} seconds and'.format(deltaTime) +
+                                 ' resuming...')
 
-                time.sleep(deltaTime)
+                time.sleep(int(deltaTime))
                 return self.getTipsForVenue(venueId, offset)
 
             elif (response.status_code == 500) and (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):

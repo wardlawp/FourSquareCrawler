@@ -14,7 +14,7 @@ from datetime import datetime
 
 # Assets of this Project
 from settings import CLIENT_ID, CLIENT_SECRET
-from Utils import RateLimiter, configureLogging
+from Utils import configureLogging
 from Requests import TipRequest
 
 
@@ -29,7 +29,8 @@ if __name__ == '__main__':
     log.debug('Initializing Assets')
 
     if len(sys.argv) != 2 or not sys.argv[1].count('.csv'):
-        print 'Please provide the file name of the CSV Venue file.'
+        log.warn('Please provide the file name of the CSV Venue file.')
+        log.warn('Exiting')
         exit(1)
 
     venuesIds = []
@@ -40,7 +41,6 @@ if __name__ == '__main__':
                 venuesIds.append(row[0])
 
     request = TipRequest(CLIENT_ID, CLIENT_SECRET)
-    rate = RateLimiter()
 
     log.info('Beginning retrieval of tips for {0} venues'.format(len(venuesIds)))
 
@@ -48,10 +48,10 @@ if __name__ == '__main__':
     totalLen = len(venuesIds)
     curr = 0
     for vId in venuesIds:
-        rate.check()
         log.info('{0}/{1} Venues'.format(curr, totalLen))
         results[vId] = request.getTipsForVenue(vId)
         curr += 1
+
     log.info('Crawl Complete')
     log.info('{0} tips retrieved.'.format(len(results)))
 
