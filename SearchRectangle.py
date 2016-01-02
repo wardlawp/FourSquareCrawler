@@ -60,7 +60,7 @@ class SearchRectangle(object):
         """
         if len(self.__subDivisions) != 0:
             for s in self.__subDivisions:
-                self.__addResults(s.search(rateLimiter, venueRequest))
+                self.__addResults(s.search(venueRequest))
         else:
             results = venueRequest.getVenuesInRegion(self.NE, self.SW)
 
@@ -70,7 +70,7 @@ class SearchRectangle(object):
                 self.log.warn("MAX_VENUES_PER_REQUEST exceeded." +
                               " Sub dividing region to find additional venues")
                 self.__subDivide(self.recSubdivisions)
-                self.__addResults(self.search(rateLimiter, venueRequest))
+                self.__addResults(self.search(venueRequest))
 
         return self.__results
 

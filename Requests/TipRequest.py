@@ -3,28 +3,27 @@
 @author: Philip Wardlaw
 Created on Dec 30, 2015
 '''
-import requests
+
 import logging
-import time
 import json
+from FourSquareRequest import FourSquareRequest
 
 
-class TipRequest(object):
+class TipRequest(FourSquareRequest):
     """Class for making requests to FourSquare Tip API
     """
     log = logging.getLogger('TipRequest')
     MAX_TIPS_PER_REQUEST = 500
-    FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/{0}/tips'
-    API_VERSION = '20140806'
+    FOURSQUARE_TIPS_URL = 'https://api.foursquare.com/v2/venues/{0}/tips'
     INTERNAL_ERROR_RETRY_LIMIT = 5
 
     def __init__(self, clientId, clientSecret):
         self.log.debug('Instantiating TipRequest')
-        self.clientId = clientId
-        self.clientSecret = clientSecret
-        self.url = self.FOURSQUARE_SEARCH_URL
-        self.apiVersion = self.API_VERSION
-        self.__internalErrorRetrys = 0
+        super(FourSquareRequest, self).__init__(clientId,
+                                                clientSecret,
+                                                self.FOURSQUARE_TIPS_URL)
+
+
 
     def __prepareParams(self, offset):
         payload = {}
@@ -35,6 +34,28 @@ class TipRequest(object):
         payload['offset'] = offset
         return payload
 
+    def __handleResonse(self, response):
+        json = response.json()
+
+        items = json['response']['tips']['items']
+        count = len(items)
+
+        if count == self.MAX_TIPS_PER_REQUEST:
+            m = self.MAX_TIPS_PER_REQUEST
+            newOffset = offset + m
+
+            msg = 'Number of Tips exceeds limit,' \
+                  ' recursing with offset {0}'
+
+            self.log.info(msg.format(newOffset))
+
+            rCount, rItems = self.getTipsForVenue(venueId, newOffset)
+            count += rCount
+            items += rItems
+
+        return count, items
+
+
     def getTipsForVenue(self, venueId, offset=0):
         """Get Tips for a Venue
         """
@@ -42,32 +63,18 @@ class TipRequest(object):
         msg = "Requesting Tips for Venue {0}".format(venueId)
         self.log.info(msg)
 
-        payload = self.__prepareParams(offset)
-        url = self.url.format(venueId)
+        self.makeRequest(self.url.format(venueId),
+                         self.__prepareParams(offset),
+                         self.__handleResonse,
+                         )
+        payload = 
+        url = 
 
         try:
             response = requests.get(url, payload)
 
             if response.status_code == 200:
-                json = response.json()
-
-                items = json['response']['tips']['items']
-                count = len(items)
-
-                if count == self.MAX_TIPS_PER_REQUEST:
-                    m = self.MAX_TIPS_PER_REQUEST
-                    newOffset = offset + m
-
-                    msg = 'Number of Tips exceeds limit,' \
-                          ' recursing with offset {0}'
-
-                    self.log.info(msg.format(newOffset))
-
-                    rCount, rItems = self.getTipsForVenue(venueId, newOffset)
-                    count += rCount
-                    items += rItems
-
-                return count, items
+                
 
             elif response.status_code == 404:
                 # Venue no loner exists

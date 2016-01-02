@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     repo = VenueTipRepo()
     totalLen = len(venuesIds)
-    curr = 0
+    curr = 1
     for vId in venuesIds:
         log.info('{0}/{1} Venues'.format(curr, totalLen))
 
