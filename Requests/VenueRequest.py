@@ -31,7 +31,6 @@ class VenueRequest(object):
         payload = {}
         payload['client_id'] = self.clientId
         payload['client_secret'] = self.clientSecret
-        # TODO change
         payload['ne'] = "{0},{1}".format(NE[0], NE[1])
         payload['sw'] = "{0},{1}".format(SW[0], SW[1])
         payload['v'] = self.apiVersion
@@ -73,12 +72,12 @@ class VenueRequest(object):
 
             elif response.status_code == 403:
                 self.log.warning('Rate limit Exceeded')
-                sleepUntil = response.headers.get('X-RateLimit-Reset')
-                deltaTime = sleepUntil - time.time()
-                self.log.warning('Waiting {0} seconds and' +
-                                 ' resuming...'.format(deltaTime))
+                sleepUntil = int(response.headers.get('x-rateLimit-reset'))
+                deltaTime = sleepUntil - time.time() + 300
+                self.log.warning('Waiting {0} seconds and'.format(deltaTime) +
+                                 ' resuming...')
 
-                time.sleep(deltaTime)
+                time.sleep(int(deltaTime))
                 return self.getVenuesInRegion(NE, SW)
 
             elif (response.status_code == 500) and (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
@@ -95,7 +94,7 @@ class VenueRequest(object):
                 response.raise_for_status()
 
         except Exception as e:
-            self.log.warning('Unhandled Exception error occurred')
+            self.log.warning('Unhandled Exception occurred')
 
             if (self.__internalErrorRetrys < self.INTERNAL_ERROR_RETRY_LIMIT):
                 self.log.warning('Waiting one minute and trying again')
@@ -103,6 +102,6 @@ class VenueRequest(object):
                 self.__internalErrorRetrys += 1
                 return self.getVenuesInRegion(NE, SW)
             else:
-                self.log.warning('Maximum retries performed,' +
+                self.log.warning('Maximum retries performed,'
                                  ' throwing exception...')
                 raise e

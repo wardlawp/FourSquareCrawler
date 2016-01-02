@@ -19,7 +19,7 @@ def configureLogging(name, startTimeStamp):
                         format='%(asctime)s %(name)-12s %(levelname)-8s' +
                                ' %(message)s',
                         datefmt='%m-%d %H:%M',
-                        filename='logs/' + name  + startTimeStamp + '.log',
+                        filename='logs/' + name + startTimeStamp + '.log',
                         filemode='w')
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()

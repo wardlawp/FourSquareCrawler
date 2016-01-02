@@ -10,7 +10,7 @@ import json
 
 
 class TipRequest(object):
-    """Class for making requests to FourSquare Tip api
+    """Class for making requests to FourSquare Tip API
     """
     log = logging.getLogger('TipRequest')
     MAX_TIPS_PER_REQUEST = 500
@@ -50,7 +50,7 @@ class TipRequest(object):
 
             if response.status_code == 200:
                 json = response.json()
-                
+
                 items = json['response']['tips']['items']
                 count = len(items)
 
@@ -58,7 +58,9 @@ class TipRequest(object):
                     m = self.MAX_TIPS_PER_REQUEST
                     newOffset = offset + m
 
-                    msg = 'Number of Tips exceeds limit, recursing with offset {0}'
+                    msg = 'Number of Tips exceeds limit,' \
+                          ' recursing with offset {0}'
+
                     self.log.info(msg.format(newOffset))
 
                     rCount, rItems = self.getTipsForVenue(venueId, newOffset)
@@ -66,15 +68,15 @@ class TipRequest(object):
                     items += rItems
 
                 return count, items
-            
+
             elif response.status_code == 404:
-                #Venue no loner exists
+                # Venue no loner exists
                 return 0, []
 
             elif response.status_code == 403:
                 self.log.warning('Rate limit Exceeded')
                 sleepUntil = int(response.headers.get('x-rateLimit-reset'))
-                deltaTime = sleepUntil - time.time()
+                deltaTime = sleepUntil - time.time() + 300
                 self.log.warning('Waiting {0} seconds and'.format(deltaTime) +
                                  ' resuming...')
 

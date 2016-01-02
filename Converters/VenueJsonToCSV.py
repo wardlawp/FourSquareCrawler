@@ -7,6 +7,12 @@ import json as J
 import sys
 import codecs
 
+
+def stripWhiteSpaceChars(aString):
+    return aString.replace('\t', ' ') \
+                  .replace('\n', ' ') \
+                  .replace('\r', ' ')
+
 if __name__ == '__main__':
 
     if len(sys.argv) != 2 or not sys.argv[1].count('.json'):
@@ -18,16 +24,21 @@ if __name__ == '__main__':
         json = J.load(fp)
 
     print 'Writing output CSV'
-    newFile = codecs.open(sys.argv[1].replace('.json', '.csv'), 'w', encoding='UTF-8')
+    newFile = codecs.open(sys.argv[1].replace('.json', '.csv'),
+                          'w', encoding='UTF-8')
     for key in json:
         venue = json[key]
+
         line = key + '\t' \
-            + venue['name'] + '\t' \
-            + str(venue['location']['lat']) + '\t' \
-            + str(venue['location']['lng']) + '\t'
+            + stripWhiteSpaceChars(venue['name'].replace('\t', ' ')) \
+            + '\t' \
+            + str(venue['location']['lat']) \
+            + '\t' \
+            + str(venue['location']['lng']) \
+            + '\t'
 
         for c in venue['categories']:
-            line += c['name'] + '\t'
+            line += stripWhiteSpaceChars(c['name'].replace('\t', ' ')) + '\t'
 
         newFile.write(line + '\n')
 

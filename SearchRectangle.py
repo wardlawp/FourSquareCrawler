@@ -52,7 +52,7 @@ class SearchRectangle(object):
 
         self.__results = {}
 
-    def search(self, rateLimiter, venueRequest):
+    def search(self, venueRequest):
         """ Search for venues, returns a dictionary of venues
         Keyword arguments:
         rateLimiter -- object type RateLimiter
@@ -62,7 +62,6 @@ class SearchRectangle(object):
             for s in self.__subDivisions:
                 self.__addResults(s.search(rateLimiter, venueRequest))
         else:
-            rateLimiter.check()
             results = venueRequest.getVenuesInRegion(self.NE, self.SW)
 
             if len(results) < VenueRequest.MAX_VENUES_PER_REQUEST:
