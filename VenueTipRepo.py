@@ -2,6 +2,7 @@
 @summary: Persistence Class for storing serialized tips
 
 This file can be executed to clear the database, or print it's contents
+Provide 'clear' or 'print' as command line argument
 
 @author: Philip Wardlaw
 Created on Jan 1, 2016
@@ -25,7 +26,8 @@ class VenueTipRepo(object):
         self.con = lite.connect(self.fp)
         self.cur = self.con.cursor()
         self.cur.execute('CREATE TABLE IF NOT EXISTS'
-                         ' VenueTips(venueId TEXT UNIQUE, tips TEXT);')
+                         ' VenueTips(venueId TEXT UNIQUE,'
+                         ' tips TEXT);')
 
     def addVenueTips(self, venueId, tips):
         """Add tips for a given venue to the repo
@@ -46,7 +48,7 @@ class VenueTipRepo(object):
         assert isinstance(venueId, str)
         self.log.info('Deleting tips for Venue {0} from VenueTipRepo {1}'
                       .format(venueId, self.fp))
-        self.cur.execute("DELETE FROM VenueTips Where venueId = ?;", (venueId,))
+        self.cur.execute("DELETE FROM VenueTips WHERE venueId = ?;", (venueId,))
         self.con.commit()
 
     def hasTips(self, venueId):
@@ -62,12 +64,14 @@ class VenueTipRepo(object):
 
     def getTip(self, venueId):
         """
-        returns array
+        returns array [string venueId , array tips]
         """
         assert isinstance(venueId, str)
         self.cur.execute("SELECT * FROM VenueTips Where venueId = ?;",
                          (venueId,))
-        return json.loads(self.cur.fetchone())
+
+        row = self.cur.fetchone()
+        return [row[0], json.loads(row[1])]
 
     def clearAll(self):
         self.log.info('Deleting all tips from VenueTipRepo {0}'
@@ -77,7 +81,7 @@ class VenueTipRepo(object):
 
     def all(self):
         """ Get dict of all tips
-        returns dict {string venueId : array tips }
+        returns dict {string venueId : array tips}
         """
         self.cur.execute("SELECT * FROM VenueTips;")
         results = self.cur.fetchall()

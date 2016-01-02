@@ -1,8 +1,8 @@
 '''
-@summary: FourSquare Web crawler to find all Venues in Singapore
+@summary: FourSquare Web crawler to find all tips for given list of venues
 @author: Philip Wardlaw
 
-Created on Dec 17, 2015
+Created on Dec 29, 2015
 '''
 
 # Python General
@@ -44,7 +44,8 @@ if __name__ == '__main__':
 
     request = TipRequest(CLIENT_ID, CLIENT_SECRET)
 
-    log.info('Beginning retrieval of tips for {0} venues'.format(len(venuesIds)))
+    log.info('Beginning retrieval of tips for {0} venues'
+             .format(len(venuesIds)))
 
     repo = VenueTipRepo()
     totalLen = len(venuesIds)

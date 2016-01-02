@@ -1,14 +1,18 @@
 '''
+@summary: Converts output of VenueCrawler.py to CSV
+@author: Philip Wardlaw
 Created on Dec 30, 2015
 
-@author: wardlaw
+STAND ALONE SCRIPT
 '''
 import json as J
 import sys
 import codecs
 
+delim = '\t'
 
-def stripWhiteSpaceChars(aString):
+
+def stripChars(aString):
     return aString.replace('\t', ' ') \
                   .replace('\n', ' ') \
                   .replace('\r', ' ')
@@ -29,16 +33,16 @@ if __name__ == '__main__':
     for key in json:
         venue = json[key]
 
-        line = key + '\t' \
-            + stripWhiteSpaceChars(venue['name'].replace('\t', ' ')) \
-            + '\t' \
+        line = key + delim \
+            + stripChars(venue['name']) \
+            + delim \
             + str(venue['location']['lat']) \
-            + '\t' \
+            + delim \
             + str(venue['location']['lng']) \
-            + '\t'
+            + delim
 
         for c in venue['categories']:
-            line += stripWhiteSpaceChars(c['name'].replace('\t', ' ')) + '\t'
+            line += stripChars(c['name']) + delim
 
         newFile.write(line + '\n')
 
