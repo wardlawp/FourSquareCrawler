@@ -20,12 +20,9 @@ class VenueRequest(object):
 
     def __init__(self, clientId, clientSecret):
         self.log.debug('Instantiating VenueRequest')
-        self.clientId = clientId
-        self.clientSecret = clientSecret
-        self.url = self.FOURSQUARE_SEARCH_URL
-        self.apiVersion = self.API_VERSION
+        # super clientId,clientSecret,  FOURSQUARE_TIPS_URL
         self.country = self.COUNTRY
-        self.__internalErrorRetrys = 0
+
 
     def __prepareParams(self, NE, SW):
         payload = {}
